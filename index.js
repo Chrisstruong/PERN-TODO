@@ -59,7 +59,7 @@ app.put("/todos/:id", async(req, res) => {
 })
 
 
-//delete a todo
+//delete a todo route
 app.delete("/todos/:id", async (req, res)=> {
     try {
         const {id} = req.params;
