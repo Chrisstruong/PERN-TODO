@@ -1,7 +1,21 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 const ListTodos = () => {
     const [todos, setTodos] = useState([])
+
+    // delete todo function
+
+    const deleteTodo = async (id) => {
+        try {
+            const deleteTodo = await fetch(`http://localhost:1000/todos/${id}`, {
+                method:"DELETE"
+            })
+            setTodos(todos.filter(todo => todo.todo_id !== id))
+        } catch (err) {
+            console.error(err)
+        }
+
+    }
 
 
     const getTodos = async () => {
@@ -15,37 +29,37 @@ const ListTodos = () => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getTodos()
     }, [])
     console.log(todos)
     return (
-      <Fragment> 
-        <table class="table mt-5 text-centetr">
-    <thead>
-      <tr>
-        <th>Description</th>
-        <th>Edit</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {/* <tr>
+        <Fragment>
+            <table class="table mt-5 text-centetr">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {/* <tr>
         <td>John</td>
         <td>Doe</td>
         <td>john@example.com</td>
       </tr> */}
-      {todos.map(todo=> (
-        <tr>
-            <td>{todo.description}</td>
-            <td>Edit</td>
-            <td>Delete</td>
-        </tr>
-      ))}
-      
-    </tbody>
-  </table>
-      </Fragment>
+                    {todos.map(todo => (
+                        <tr key={todo.todo_id}>
+                            <td>{todo.description}</td>
+                            <td>Edit</td>
+                            <td><button className="btn btn-danger" onClick={() => { deleteTodo(todo.todo_id) }}>Delete</button></td>
+                        </tr>
+                    ))}
+
+                </tbody>
+            </table>
+        </Fragment>
     )
 }
 
